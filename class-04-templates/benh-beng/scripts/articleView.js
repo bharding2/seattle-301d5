@@ -1,6 +1,18 @@
 // Configure a view object, to hold all our functions for dynamic updates and article-related event handlers.
 var articleView = {};
 
+articleView.makeFilters = function () {
+  var template = Handlebars.compile($('#filter-template').text());
+
+  var filter_data = {
+    filters: [
+      {filter_type: 'author'},
+      {filter_type: 'category'}
+    ]
+  }
+  $('#filters').append(template(filter_data));
+};
+
 articleView.populateFilters = function() {
   $('article').each(function() {
     if (!$(this).hasClass('template')) {
@@ -63,6 +75,7 @@ articleView.setTeasers = function() {
 };
 
 $(document).ready(function() {
+  articleView.makeFilters();
   articleView.populateFilters();
   articleView.handleCategoryFilter();
   articleView.handleAuthorFilter();
