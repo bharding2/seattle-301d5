@@ -1,7 +1,5 @@
 (function(module) {
   function Article (opts) {
-    // DONE: Convert property assignment to Functional Programming style. Now, ALL properties of `opts` will be
-    // assigned as properies of the newly created article object.
     Object.keys(opts).forEach(function(e, index, keys) {
       this[e] = opts[e];
     },this);
@@ -48,7 +46,6 @@
     );
   };
 
-  // TODO: Insert an article instance into the database:
   Article.prototype.insertRecord = function(callback) {
     webDB.execute(
       [
@@ -61,7 +58,6 @@
     );
   };
 
-  // TODO: Delete an article instance from the database:
   Article.prototype.deleteRecord = function(callback) {
     webDB.execute(
       [
@@ -74,7 +70,6 @@
     );
   };
 
-  // TODO: Update an article instance, overwriting it's properties into the corresponding record in the database:
   Article.prototype.updateRecord = function(callback) {
     webDB.execute(
       [
@@ -87,35 +82,26 @@
     );
   };
 
-  // DONE: Refactor to expect the raw data from the database, rather than localStorage.
   Article.loadAll = function(rows) {
     Article.all = rows.map(function(ele) {
       return new Article(ele);
     });
   };
 
-  // TODO: Refactor this to check if the database holds any records or not. If the DB is empty,
-  // we need to retrieve the JSON and process it.
-  // If the DB has data already, we'll load up the data (sorted!), and then hand off control to the View.
   Article.fetchAll = function(next) {
     webDB.execute('SELECT * FROM articles', function(rows) {
       if (rows.length) {
-        // Now instanitate those rows with the .loadAll function, and pass control to the view.
         Article.loadAll(rows);
         articleView.initIndexPage();
 
       } else {
         $.getJSON('/data/hackerIpsum.json', function(rawData) {
-          // Cache the json, so we don't need to request it next time:
           rawData.forEach(function(item) {
-            var article = new Article(item); // Instantiate an article based on item from JSON
-            // Cache the newly-instantiated article in DB:
+            var article = new Article(item);
             article.insertRecord();
 
           });
-          // Now get ALL the records out the DB, with their database IDs:
           webDB.execute('SELECT * FROM articles', function(rows) {
-            // Now instanitate those rows with the .loadAll function, and pass control to the view.
             Article.loadAll(rows);
             articleView.initIndexPage();
           });
