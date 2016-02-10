@@ -41,7 +41,9 @@
     webDB.execute(
       'DELETE FROM articles;',
       function(result) {
-        console.log('deleted records, new table:');
+        if (callback) {
+          callback();
+        }
       }
     );
   };
@@ -54,7 +56,11 @@
           'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.body]
         }
       ],
-      callback
+      function(result) {
+        if (callback) {
+          callback();
+        }
+      }
     );
   };
 
@@ -66,7 +72,11 @@
           'data': [this.title]
         }
       ],
-      callback
+      function(result) {
+        if (callback) {
+          callback();
+        }
+      }
     );
   };
 
@@ -78,7 +88,11 @@
           'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.body]
         }
       ],
-      callback
+      function(result) {
+        if (callback) {
+          callback();
+        }
+      }
     );
   };
 
@@ -92,7 +106,7 @@
     webDB.execute('SELECT * FROM articles', function(rows) {
       if (rows.length) {
         Article.loadAll(rows);
-        articleView.initIndexPage();
+        next();
 
       } else {
         $.getJSON('/data/hackerIpsum.json', function(rawData) {
@@ -103,7 +117,7 @@
           });
           webDB.execute('SELECT * FROM articles', function(rows) {
             Article.loadAll(rows);
-            articleView.initIndexPage();
+            next();
           });
         });
       }
