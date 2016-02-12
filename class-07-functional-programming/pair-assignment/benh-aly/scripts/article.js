@@ -75,20 +75,20 @@
   Article.numWordsByAuthor = function() {
     return Article.allAuthors().map(function(author) {
       return {
-                name: author,
-                numWords: Article.all.filter(function(article) {
-                  return article.author === author;
-                })
-                .map(function(article) {
-                  return article.body.match(/\b\w+/g).length;
-                })
-                .reduce(function(a, b) {
-                  return a + b;
-                })
-             }
+        name: author,
+        numWords: Article.all.filter(function(article) {
+          return article.author === author;
+        })
+        .map(function(article) {
+          return article.body.match(/\b\w+/g).length;
+        })
+        .reduce(function(a, b) {
+          return a + b;
+        })
+     }
     })
   };
 
 //expose Article to window
 module.Article = Article;
-}(window));
+})(window);
