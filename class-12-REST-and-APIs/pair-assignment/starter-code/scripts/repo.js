@@ -4,8 +4,24 @@
   repos.all = [];
 
   repos.requestRepos = function(callback) {
-    // TODO: How would you like to fetch your repos? Don't forget to call the callback.
+    // DONE: How would you like to fetch your repos? Don't forget to call the callback.
 
+    $.ajax({
+      url: 'https://api.github.com/users/bharding2/repos' +
+            '?per_page=5&sort=updated',
+      type: 'GET',
+      headers: { 'Authorization': 'token ' + githubToken },
+      success: function(data, message, xhr) {
+        //do stuff, not jquery stuff, call functions
+        console.log(data);
+        repos.all = [];
+        data.forEach(function(ele) {
+          repos.all.push(ele);
+        });
+      }
+    }).done(function() {
+      if(callback) callback();
+    });
   };
 
   // DONE: Model method that filters the full collection for repos with a particular attribute.
