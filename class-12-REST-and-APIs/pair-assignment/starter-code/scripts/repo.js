@@ -14,10 +14,7 @@
       success: function(data, message, xhr) {
         //do stuff, not jquery stuff, call functions
         console.log(data);
-        repos.all = [];
-        data.forEach(function(ele) {
-          repos.all.push(ele);
-        });
+        repos.all = data;
       }
     }).done(function() {
       if(callback) callback();
